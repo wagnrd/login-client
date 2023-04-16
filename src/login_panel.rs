@@ -4,12 +4,12 @@ use adw::prelude::*;
 use crate::auth0_login::{login, LoginError, OidcResponse};
 
 pub fn build_ui() -> gtk::Stack {
-    let username_text_field = adw::EntryRow::builder()
-        .title("Username")
+    let username_text_field = gtk::Entry::builder()
+        .placeholder_text("Username")
         .build();
 
-    let password_text_field = adw::PasswordEntryRow::builder()
-        .title("Password")
+    let password_text_field = gtk::PasswordEntry::builder()
+        .placeholder_text("Password")
         .build();
 
     let input_container = gtk::Box::builder()
