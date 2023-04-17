@@ -1,0 +1,22 @@
+import { VerticalBox, HorizontalBox } from "std-widgets.slint";
+
+export component LoadingPanel inherits VerticalBox {
+    alignment: center;
+
+    HorizontalBox {
+        alignment: center;
+
+        Image {
+            width: 25px;
+            height: 25px;
+            rotation-angle: 360deg * mod(animation-tick(), 1.5s) / 1.5s;
+            source: @image-url("assets/loading.png");
+        }
+    }
+
+    Text {
+        horizontal-alignment: center;
+        vertical-alignment: center;
+        text: "Logging in";
+    }
+}

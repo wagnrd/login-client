@@ -9,34 +9,29 @@ export component LoginPanel inherits VerticalBox {
     padding: 20px;
 
     callback on_login_clicked(LoginData);
-    out property <bool> is_error_visible: false;
+    in property <string> error;
 
-    property <string> error_text;
     property <string> username;
     property <string> password;
-
-    public function show_error(text: string) {
-        self.is-error-visible = true;
-    }
 
     VerticalBox {
         LineEdit {
             width: 200px;
             placeholder-text: "Username";
-            edited(text) => { root.username = self.text; }
+            text <=> root.username;
         }
 
         LineEdit {
             width: 200px;
             input-type: InputType.password;
             placeholder-text: "Password";
-            edited(text) => { root.password = self.text; }
+            text <=> root.password;
         }
     }
 
     Text {
-        visible: parent.is_error_visible;
-        text: parent.error_text;
+        visible: parent.error == "" ? false : true;
+        text: parent.error;
         color: #E00;
         horizontal-alignment: center;
     }

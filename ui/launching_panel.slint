@@ -1,0 +1,20 @@
+import { VerticalBox, HorizontalBox } from "std-widgets.slint";
+
+export component LaunchingPanel inherits HorizontalBox {
+    alignment: center;
+
+    VerticalBox {
+        alignment: center;
+        spacing: 10px;
+
+        Text {
+            horizontal-alignment: center;
+            text: "Login successful";
+        }
+
+        Text {
+            horizontal-alignment: center;
+            text: "Launching application...";
+        }
+    }
+}
