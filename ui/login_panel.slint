@@ -1,0 +1,57 @@
+import { Button, VerticalBox, HorizontalBox, LineEdit} from "std-widgets.slint";
+
+export struct LoginData {
+    username: string,
+    password: string,
+}
+
+export component LoginPanel inherits VerticalBox {
+    padding: 20px;
+
+    callback on_login_clicked(LoginData);
+    out property <bool> is_error_visible: false;
+
+    property <string> error_text;
+    property <string> username;
+    property <string> password;
+
+    public function show_error(text: string) {
+        self.is-error-visible = true;
+    }
+
+    VerticalBox {
+        LineEdit {
+            width: 200px;
+            placeholder-text: "Username";
+            edited(text) => { root.username = self.text; }
+        }
+
+        LineEdit {
+            width: 200px;
+            input-type: InputType.password;
+            placeholder-text: "Password";
+            edited(text) => { root.password = self.text; }
+        }
+    }
+
+    Text {
+        visible: parent.is_error_visible;
+        text: parent.error_text;
+        color: #E00;
+        horizontal-alignment: center;
+    }
+
+    HorizontalBox {
+        alignment: center;
+
+        Button {
+            text: "Login";
+            clicked => {
+                root.on_login_clicked({
+                    username: root.username,
+                    password: root.password,
+                });
+            }
+        }
+    }
+}

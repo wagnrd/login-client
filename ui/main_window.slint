@@ -1,0 +1,9 @@
+import { LoginPanel, LoginData } from "ui/login_panel.slint";
+
+export component MainWindow inherits Window {
+    callback on_login_clicked(LoginData);
+
+    LoginPanel {
+        on_login_clicked(login_data) => { parent.on_login_clicked(login_data); }
+    }
+}

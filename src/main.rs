@@ -1,13 +1,11 @@
-use adw::prelude::*;
+use slint::Model;
 
-mod main_window;
-mod login_panel;
-mod auth0_login;
+slint::include_modules!();
 
-fn main() -> adw::glib::ExitCode {
-    let app = adw::Application::builder()
-        .application_id("de.wagnrd.login_client")
-        .build();
-    app.connect_activate(main_window::show_window);
-    app.run()
+fn main() -> Result<(), slint::PlatformError> {
+    let main_window = MainWindow::new().unwrap();
+    main_window.on_on_login_clicked(|login_data| {
+        println!("username: {} - passowrd: {}", login_data.username, login_data.password);
+    });
+    main_window.run()
 }
