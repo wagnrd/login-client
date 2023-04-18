@@ -3,8 +3,9 @@ import { LoadingPanel } from "ui/loading_panel.slint";
 import { LaunchingPanel } from "ui/launching_panel.slint";
 
 export component MainWindow inherits Window {
-    callback login_clicked(LoginData);
+    title: "Login Client";
 
+    callback login_clicked(LoginData);
     in-out property <string> active_panel: "login";
     in property <string> error;
 
