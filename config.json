@@ -1,0 +1,8 @@
+{
+  "oidc": {
+    "base_url": "https://dark-triad.eu.auth0.com",
+    "audience": "https://dark-triad.com",
+    "client_id": "tbUwI28fzIYTwS8KQLeZ9FqNXHLRZnZk"
+  },
+  "app_path": "debug/test_app"
+}

@@ -27,3 +27,16 @@ brew install gtk4 libadwaita
 - [GTK 4](https://gtk-rs.org/gtk4-rs/stable/latest/book/installation_windows.html)
 - [Libadwaita](https://gtk-rs.org/gtk4-rs/stable/latest/book/libadwaita.html)
 
+## Build and run
+
+For development first you have to build the test app:
+
+```shell
+cargo build --workspace
+```
+
+And run it with:
+
+```shell
+cargo run
+```
