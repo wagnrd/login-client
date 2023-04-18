@@ -29,8 +29,7 @@ export component LoginPanel inherits VerticalBox {
         }
     }
 
-    Text {
-        visible: parent.error == "" ? false : true;
+    if self.error != "": Text {
         text: parent.error;
         color: #E00;
         horizontal-alignment: center;

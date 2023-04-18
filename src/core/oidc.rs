@@ -1,8 +1,7 @@
 use std::collections::HashMap;
-use std::error::Error;
 
 use reqwest::{StatusCode, Url};
-use reqwest::blocking::{Client, Request, RequestBuilder, Response};
+use reqwest::blocking::{Client, Response};
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize)]
