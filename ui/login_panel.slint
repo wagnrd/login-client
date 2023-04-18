@@ -13,12 +13,25 @@ export component LoginPanel inherits VerticalBox {
 
     property <string> username;
     property <string> password;
+    property <bool> can_login: username != "" && password != "";
+
+    function trigger_on_login_clicked() {
+        if (!can_login) {
+            return;
+        }
+
+        root.on_login_clicked({
+            username: root.username,
+            password: root.password,
+        });
+    }
 
     VerticalBox {
         LineEdit {
             width: 200px;
             placeholder-text: "Username";
             text <=> root.username;
+            accepted => { trigger_on_login_clicked() }
         }
 
         LineEdit {
@@ -26,6 +39,7 @@ export component LoginPanel inherits VerticalBox {
             input-type: InputType.password;
             placeholder-text: "Password";
             text <=> root.password;
+            accepted => { trigger_on_login_clicked() }
         }
     }
 
@@ -40,12 +54,8 @@ export component LoginPanel inherits VerticalBox {
 
         Button {
             text: "Login";
-            clicked => {
-                root.on_login_clicked({
-                    username: root.username,
-                    password: root.password,
-                });
-            }
+            enabled: root.can_login;
+            clicked => { trigger_on_login_clicked() }
         }
     }
 }

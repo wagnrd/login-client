@@ -5,7 +5,7 @@ use execute::Execute;
 
 use crate::core::config::Config;
 use crate::core::oidc;
-use crate::core::oidc::Oidc;
+use crate::core::oidc::{Oidc, OidcResponse};
 
 mod core;
 
@@ -17,14 +17,12 @@ fn main() -> Result<(), slint::PlatformError> {
     let main_window = MainWindow::new().unwrap();
 
     let main_window_weak = main_window.as_weak();
-    let oidc = oidc.clone();
-    let app_path = config.app_path.clone();
     main_window.on_login_clicked(move |login_data| {
-        println!("username: {} - password: {}", login_data.username, login_data.password);
+        main_window_weak.unwrap().set_active_panel("loading".into());
 
         let main_window = main_window_weak.clone();
         let oidc = oidc.clone();
-        let app_path = app_path.clone();
+        let app_path = config.app_path.clone();
         thread::spawn(move || {
             let login_result = oidc.login(login_data.username.to_string(), login_data.password.to_string());
 
@@ -32,12 +30,8 @@ fn main() -> Result<(), slint::PlatformError> {
                 Ok(response) => {
                     slint::invoke_from_event_loop(move || {
                         main_window.unwrap().set_active_panel("launching".into());
-                        Command::new(app_path)
-                            .args(["--id_token", response.id_token.as_str()])
-                            .args(["--access_token", response.access_token.as_str()])
-                            .execute()
-                            .expect("Failed to launch application");
                     }).expect("Should be executed in event loop");
+                    launch_app(app_path, response);
                 }
                 Err(error) => {
                     let error_text = match error {
@@ -54,4 +48,12 @@ fn main() -> Result<(), slint::PlatformError> {
     });
 
     main_window.run()
+}
+
+fn launch_app(app_path: String, tokens: OidcResponse) {
+    Command::new(app_path)
+        .args(["--id_token", tokens.id_token.as_str()])
+        .args(["--access_token", tokens.access_token.as_str()])
+        .execute()
+        .expect("Failed to launch application");
 }
