@@ -18,8 +18,6 @@ fn main() -> Result<(), slint::PlatformError> {
 
     let main_window_weak = main_window.as_weak();
     main_window.on_login_clicked(move |login_data| {
-        main_window_weak.unwrap().set_active_panel("loading".into());
-
         let main_window = main_window_weak.clone();
         let oidc = oidc.clone();
         let app_path = config.app_path.clone();
