@@ -3087,9 +3087,6 @@ dependencies = [
 [[package]]
 name = "test_app"
 version = "0.1.0"
-dependencies = [
- "slint",
-]
 
 [[package]]
 name = "text-size"

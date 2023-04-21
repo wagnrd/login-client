@@ -4,5 +4,5 @@
     "audience": "https://dark-triad.com",
     "client_id": "tbUwI28fzIYTwS8KQLeZ9FqNXHLRZnZk"
   },
-  "app_path": "debug/test_app"
+  "app_path": "/adfdebug/test_app"
 }
