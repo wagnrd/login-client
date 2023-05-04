@@ -1,49 +1,64 @@
-use iced::{Alignment, Application, Command, Element, executor, Length, Renderer, Theme};
-use iced::widget::{button, column, container, text_input};
+use std::convert::identity;
 
-pub struct App {}
+use relm4::{adw, Component, ComponentController, ComponentParts, ComponentSender, Controller, gtk, SimpleComponent};
+use relm4::adw::prelude::*;
 
-impl Application for App {
-    type Executor = executor::Default;
-    type Message = ();
-    type Theme = Theme;
-    type Flags = ();
+use crate::login_panel::LoginPanel;
 
-    fn new(_: Self::Flags) -> (Self, Command<Self::Message>) {
-        (
-            App {},
-            Command::none()
-        )
+pub struct App {
+    login_panel: Controller<LoginPanel>,
+}
+
+#[derive(Debug)]
+pub enum AppMsg {
+    Increment,
+    Decrement,
+}
+
+pub struct AppWidgets {}
+
+impl SimpleComponent for App {
+    type Input = AppMsg;
+    type Output = ();
+    type Init = ();
+    type Root = adw::Window;
+    type Widgets = AppWidgets;
+
+    fn init_root() -> Self::Root {
+        adw::Window::builder()
+            .title("Login Client")
+            .default_width(300)
+            .default_height(200)
+            .build()
     }
 
-    fn title(&self) -> String {
-        "Login Client".to_string()
+    fn init(
+        _args: Self::Init,
+        window: &Self::Root,
+        sender: ComponentSender<Self>,
+    ) -> ComponentParts<Self> {
+        let login_panel = LoginPanel::builder()
+            .launch(())
+            .forward(sender.input_sender(), |()| { AppMsg::Decrement });
+
+
+        let vbox = gtk::Box::builder()
+            .orientation(gtk::Orientation::Vertical)
+            .build();
+        vbox.append(&adw::HeaderBar::default());
+        vbox.append(login_panel.widget());
+
+        window.set_content(Some(&vbox));
+
+        let model = App {
+            login_panel
+        };
+        let widgets = AppWidgets {};
+
+        ComponentParts { model, widgets }
     }
 
-    fn update(&mut self, message: Self::Message) -> Command<Self::Message> {
-        Command::none()
-    }
+    fn update(&mut self, _msg: Self::Input, _sender: ComponentSender<Self>) {}
 
-    fn view(&self) -> Element<'_, Self::Message, Renderer<Self::Theme>> {
-        let username_input = text_input("Username", "")
-            .width(200);
-        let password_input = text_input("Password", "")
-            .width(200)
-            .password();
-        let inputs = column![username_input, password_input].spacing(10);
-
-        let login_button = button("Login");
-
-        let content = column![inputs, login_button]
-            .spacing(20)
-            .align_items(Alignment::Center);
-
-        container(content)
-            .width(Length::Fill)
-            .height(Length::Fill)
-            .padding(40)
-            .center_x()
-            .center_y()
-            .into()
-    }
+    fn update_view(&self, _widgets: &mut Self::Widgets, _sender: ComponentSender<Self>) {}
 }
